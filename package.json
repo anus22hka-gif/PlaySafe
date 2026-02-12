@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/anus22hka-gif/playwise-intel/issues"
   },
-  "homepage": "https://github.com/anus22hka-gif/playwise-intel#readme"
+  "homepage": "https://github.com/anus22hka-gif/playwise-intel#readme",
+  "devDependencies": {
+    "@vitejs/plugin-react-swc": "^4.2.3"
+  }
 }
