@@ -1,0 +1,21 @@
+{
+  "name": "playwise-intel",
+  "version": "1.0.0",
+  "description": "",
+  "main": "eslint.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anus22hka-gif/playwise-intel.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/anus22hka-gif/playwise-intel/issues"
+  },
+  "homepage": "https://github.com/anus22hka-gif/playwise-intel#readme"
+}
