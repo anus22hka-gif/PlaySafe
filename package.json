@@ -1,21 +1,19 @@
 {
   "name": "playwise-intel",
+  "private": true,
   "version": "1.0.0",
-  "description": "",
-  "main": "eslint.config.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/anus22hka-gif/playwise-intel.git"
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/anus22hka-gif/playwise-intel/issues"
-  },
-  "homepage": "https://github.com/anus22hka-gif/playwise-intel#readme"
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.0.0",
+    "vite": "^5.0.0"
+  }
 }
