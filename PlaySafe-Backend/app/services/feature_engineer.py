@@ -1,25 +1,24 @@
 import numpy as np
 
-def joint_angle(a, b, c):
-    a = np.array(a)
-    b = np.array(b)
-    c = np.array(c)
+def compute_formation_metrics(team_positions):
 
-    ba = a - b
-    bc = c - b
+    if len(team_positions) == 0:
+        return {
+            "width": 0,
+            "depth": 0,
+            "compactness": 0
+        }
 
-    cosine = np.dot(ba, bc) / (np.linalg.norm(ba) * np.linalg.norm(bc))
-    angle = np.degrees(np.arccos(cosine))
-    return angle
+    xs = [p[0] for p in team_positions]
+    ys = [p[1] for p in team_positions]
 
-def extract_features(landmarks):
-    features = {}
+    width = max(xs) - min(xs)
+    depth = max(ys) - min(ys)
 
-    # Example: knee angle
-    hip = landmarks[23]
-    knee = landmarks[25]
-    ankle = landmarks[27]
+    compactness = width * depth
 
-    features["left_knee_angle"] = joint_angle(hip, knee, ankle)
-
-    return features
+    return {
+        "width": width,
+        "depth": depth,
+        "compactness": compactness
+    }

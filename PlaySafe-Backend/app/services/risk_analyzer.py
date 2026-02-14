@@ -1,29 +1,23 @@
-import joblib
-import numpy as np
-from app.config import BASELINE_PATH
+def analyze_tactics(metrics):
 
-def analyze_risk(player_id, features):
-    model = joblib.load(BASELINE_PATH + f"{player_id}.pkl")
+    width = metrics["width"]
+    depth = metrics["depth"]
+    compactness = metrics["compactness"]
 
-    X = np.array([[f["left_knee_angle"]] for f in features])
-
-    scores = model.decision_function(X)
-    anomaly = model.predict(X)
-
-    risk_score = float(abs(scores.mean()))
-
-    if risk_score < 0.1:
-        level = "LOW"
-    elif risk_score < 0.3:
-        level = "MODERATE"
+    if width > 600 and depth > 400:
+        formation = "4-3-3"
+        goal_probability = 0.68
+    elif width > 400:
+        formation = "4-4-2"
+        goal_probability = 0.55
     else:
-        level = "HIGH"
+        formation = "Defensive Block"
+        goal_probability = 0.35
+
+    tactical_score = min(compactness / 100000, 1)
 
     return {
-        "player_id": player_id,
-        "risk_score": risk_score,
-        "risk_level": level,
-        "deviation_summary": {
-            "anomaly_frames": int((anomaly == -1).sum())
-        }
+        "formation": formation,
+        "goal_probability": goal_probability,
+        "tactical_score": tactical_score
     }

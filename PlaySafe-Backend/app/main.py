@@ -13,3 +13,7 @@ app.add_middleware(
 )
 
 app.include_router(router)
+
+from fastapi.staticfiles import StaticFiles
+
+app.mount("/processed", StaticFiles(directory="processed"), name="processed")
