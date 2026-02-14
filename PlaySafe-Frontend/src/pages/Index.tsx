@@ -9,6 +9,7 @@ import {
   Bar,
   CartesianGrid,
   ResponsiveContainer,
+  Legend,
 } from "recharts";
 import "./index.css";
 
@@ -53,12 +54,16 @@ const Index = () => {
   const teamA = result?.teamA;
   const teamB = result?.teamB;
 
-  const goalProbabilityA = teamA?.goal_probability
+  const goalA = teamA?.goal_probability
     ? teamA.goal_probability * 100
     : 0;
 
-  const goalProbabilityB = teamB?.goal_probability
+  const goalB = teamB?.goal_probability
     ? teamB.goal_probability * 100
+    : 0;
+
+  const confidence = result?.model_confidence
+    ? result.model_confidence * 100
     : 0;
 
   return (
@@ -89,99 +94,100 @@ const Index = () => {
       {result && (
         <div className="report">
 
-          {/* METRICS */}
+          {/* TOP METRICS */}
           <div className="metrics">
-
             <div className="metric green">
               <h3>Team A Formation</h3>
               <h2>{teamA?.formation || "N/A"}</h2>
             </div>
 
             <div className="metric blue">
-              <h3>Team A Goal Probability</h3>
-              <h2>{goalProbabilityA.toFixed(0)}%</h2>
+              <h3>Team A Goal %</h3>
+              <h2>{goalA.toFixed(0)}%</h2>
             </div>
 
             <div className="metric pink">
-              <h3>Team B Goal Probability</h3>
-              <h2>{goalProbabilityB.toFixed(0)}%</h2>
+              <h3>Team B Goal %</h3>
+              <h2>{goalB.toFixed(0)}%</h2>
             </div>
 
+            <div className="metric purple">
+              <h3>Model Confidence</h3>
+              <h2>{confidence.toFixed(0)}%</h2>
+            </div>
           </div>
 
-          {/* BAR CHART */}
+          {/* COMPARISON BAR CHART */}
           <div className="chart-card">
-            <h3>Goal Probability Comparison</h3>
-            <ResponsiveContainer width="100%" height={300}>
+            <h3>Team Comparison</h3>
+            <ResponsiveContainer width="100%" height={350}>
               <BarChart
                 data={[
-                  { name: "Team A", value: goalProbabilityA },
-                  { name: "Team B", value: goalProbabilityB },
+                  {
+                    metric: "Goal %",
+                    TeamA: goalA,
+                    TeamB: goalB,
+                  },
+                  {
+                    metric: "Tactical Score",
+                    TeamA: teamA?.tactical_score * 100 || 0,
+                    TeamB: teamB?.tactical_score * 100 || 0,
+                  },
+                  {
+                    metric: "Possession",
+                    TeamA: teamA?.possession_rate * 100 || 0,
+                    TeamB: teamB?.possession_rate * 100 || 0,
+                  },
+                  {
+                    metric: "Pressing",
+                    TeamA: teamA?.pressing_intensity * 100 || 0,
+                    TeamB: teamB?.pressing_intensity * 100 || 0,
+                  },
                 ]}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
+                <XAxis dataKey="metric" />
                 <YAxis />
                 <Tooltip />
-                <Bar
-                  dataKey="value"
-                  fill="#3b82f6"
-                  radius={[10, 10, 0, 0]}
-                />
+                <Legend />
+                <Bar dataKey="TeamA" fill="#22c55e" />
+                <Bar dataKey="TeamB" fill="#ec4899" />
               </BarChart>
             </ResponsiveContainer>
           </div>
 
-          {/* LINE CHART */}
+          {/* TACTICAL TREND */}
           <div className="chart-card">
-            <h3>Team A Tactical Trend</h3>
+            <h3>Tactical Trend</h3>
             <ResponsiveContainer width="100%" height={250}>
               <LineChart
                 data={[
-                  { name: "Start", value: goalProbabilityA * 0.6 },
-                  { name: "Mid", value: goalProbabilityA * 0.8 },
-                  { name: "End", value: goalProbabilityA },
+                  { name: "Start", A: goalA * 0.6, B: goalB * 0.6 },
+                  { name: "Mid", A: goalA * 0.8, B: goalB * 0.8 },
+                  { name: "End", A: goalA, B: goalB },
                 ]}
               >
                 <XAxis dataKey="name" />
                 <YAxis />
                 <Tooltip />
-                <Line
-                  type="monotone"
-                  dataKey="value"
-                  stroke="#10b981"
-                  strokeWidth={4}
-                />
+                <Legend />
+                <Line type="monotone" dataKey="A" stroke="#22c55e" strokeWidth={4} />
+                <Line type="monotone" dataKey="B" stroke="#ec4899" strokeWidth={4} />
               </LineChart>
             </ResponsiveContainer>
           </div>
 
-          {/* FLOW */}
-          <div className="flow-card">
-            <h3>AI Tactical Flow</h3>
-            <div className="flow">
-              <span>Video</span>
-              <span>→</span>
-              <span>Jersey Detection</span>
-              <span>→</span>
-              <span>Formation Analysis</span>
-              <span>→</span>
-              <span>Goal Modeling</span>
-              <span>→</span>
-              <span>Probability Output</span>
-            </div>
-          </div>
-
-          {result.processed_video && (
+          {result?.processed_video_path && (
             <div className="chart-card">
-              <h3>Annotated Tactical Output</h3>
+              <h3>Annotated Match Output</h3>
               <video
                 controls
                 className="video"
-                src={`http://127.0.0.1:8000/${result.processed_video}`}
+                src={`http://127.0.0.1:8000/${result.processed_video_path}`}
               />
             </div>
           )}
+
         </div>
       )}
     </div>

@@ -17,3 +17,7 @@ app.include_router(router)
 from fastapi.staticfiles import StaticFiles
 
 app.mount("/processed", StaticFiles(directory="processed"), name="processed")
+
+from fastapi.staticfiles import StaticFiles
+
+app.mount("/static", StaticFiles(directory="static"), name="static")

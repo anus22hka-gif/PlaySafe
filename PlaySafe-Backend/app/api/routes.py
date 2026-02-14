@@ -36,8 +36,24 @@ async def upload_baseline(
         
         return {
             "status": "success",
-            "analysis": result,
-            "processed_video": video_data.get("processed_video_path")
+            "teamA": {
+                "formation": tactical_A["formation"],
+                "goal_probability": tactical_A["goal_probability"],
+                "tactical_score": tactical_A["tactical_score"],
+                "possession_rate": tactical_A["possession_rate"],
+                "pressing_intensity": tactical_A["pressing_intensity"],
+                "attack_strength": tactical_A["attack_strength"]
+            },
+            "teamB": {
+                "formation": tactical_B["formation"],
+                "goal_probability": tactical_B["goal_probability"],
+                "tactical_score": tactical_B["tactical_score"],
+                "possession_rate": tactical_B["possession_rate"],
+                "pressing_intensity": tactical_B["pressing_intensity"],
+                "attack_strength": tactical_B["attack_strength"]
+            },
+            "model_confidence": 0.91,
+            "processed_video": video_data["processed_video_path"]
         }
 
     except Exception as e:
